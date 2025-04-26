@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Connect</title>
+    <style>
+        /* Même CSS que précédemment */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .notification-badge {
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: relative;
+            top: -10px;
+            right: 5px;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .group-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .group-item {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .group-item:hover {
+            background-color: #f0f4f8;
+        }
+        
+        .group-item.active {
+            background-color: #e6f7ff;
+            border-left: 3px solid #4a6fa5;
+        }
+        
+        .post {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .post-author {
+            font-weight: bold;
+        }
+        
+        .post-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .post-content {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        
+        .post-action {
+            cursor: pointer;
+        }
+        
+        .post-action:hover {
+            color: #4a6fa5;
+        }
+        
+        .comment-section {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #eee;
+        }
+        
+        .comment {
+            padding: 0.5rem 0;
+        }
+        
+        .new-post {
+            margin-bottom: 2rem;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        button {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #3a5a8a;
+        }
+        
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tag {
+            background-color: #e6f7ff;
+            color: #4a6fa5;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        
+        .notification-panel {
+            position: absolute;
+            right: 1rem;
+            top: 4rem;
+            background: white;
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+            display: none;
+        }
+        
+        .notification-header {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .notification-item:hover {
+            background-color: #f0f4f8;
+        }
+        
+        .notification-item.unread {
+            background-color: #f0f7ff;
+        }
+        
+        .notification-content {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .mark-all {
+            color: #4a6fa5;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .close {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4a6fa5;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Auth modal styles */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid #eee;
+        }
+
+        .auth-tab.active {
+            border-bottom: 2px solid #4a6fa5;
+            font-weight: bold;
+        }
+
+        .auth-form {
+            width: 100%;
+        }
+
+        .report-modal .form-group {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Modal de connexion/inscription -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Bienvenue sur Parent Connect</h2>
+                <span class="close" onclick="closeModal('authModal')">&times;</span>
+            </div>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="loginTab" onclick="switchTab('login')">Connexion</div>
+                    <div class="auth-tab" id="registerTab" onclick="switchTab('register')">Inscription</div>
+                </div>
+                
+                <div class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="votre@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe</label>
+                        <input type="password" id="loginPassword" placeholder="Votre mot de passe">
+                    </div>
+                    <button onclick="login()">Se connecter</button>
+                </div>
+                
+                <div class="auth-form" id="registerForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="registerFirstName">Prénom</label>
+                        <input type="text" id="registerFirstName" placeholder="Votre prénom">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerLastName">Nom</label>
+                        <input type="text" id="registerLastName" placeholder="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" placeholder="votre@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Mot de passe</label>
+                        <input type="password" id="registerPassword" placeholder="Choisissez un mot de passe">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPasswordConfirm">Confirmer le mot de passe</label>
+                        <input type="password" id="registerPasswordConfirm" placeholder="Confirmez votre mot de passe">
+                    </div>
+                    <button onclick="register()">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de création de groupe -->
+    <div class="modal" id="createGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Créer un groupe</h2>
+                <span class="close" onclick="closeModal('createGroupModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="groupName">Nom du groupe</label>
+                <input type="text" id="groupName" placeholder="Ex: Parents de Lyon">
+            </div>
+            <div class="form-group">
+                <label for="groupDescription">Description</label>
+                <textarea id="groupDescription" rows="4" placeholder="Décrivez votre groupe en quelques mots"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="groupTags">Tags (séparés par des virgules)</label>
+                <input type="text" id="groupTags" placeholder="Ex: Lyon, 6-12 ans, École">
+            </div>
+            <button onclick="createGroup()">Créer le groupe</button>
+        </div>
+    </div>
+    
+    <!-- Modal de signalement -->
+    <div class="modal report-modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Signaler ce contenu</h2>
+                <span class="close" onclick="closeModal('reportModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="reportReason">Raison du signalement</label>
+                <select id="reportReason">
+                    <option value="inappropriate">Contenu inapproprié</option>
+                    <option value="offensive">Contenu offensant</option>
+                    <option value="spam">Spam</option>
+                    <option value="harassment">Harcèlement</option>
+                    <option value="other">Autre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="reportDetails">Détails (optionnel)</label>
+                <textarea id="reportDetails" rows="4" placeholder="Précisez votre signalement"></textarea>
+            </div>
+            <input type="hidden" id="reportContentId">
+            <input type="hidden" id="reportContentType">
+            <button onclick="reportContent()">Envoyer le signalement</button>
+        </div>
+    </div>
+    
+    <header>
+        <div class="logo">Parent Connect</div>
+        <div class="user-menu">
+            <div class="notifications" onclick="toggleNotifications()">
+                <i class="far fa-bell"></i>
+                <span class="notification-badge" id="notificationBadge">0</span>
+            </div>
+            <div class="user" id="userName">Non connecté</div>
+            <button id="authButton" onclick="showModal('authModal')">Se connecter</button>
+        </div>
+    </header>
+    
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <span>Notifications</span>
+            <span class="mark-all" onclick="markAllNotificationsAsRead()">Tout marquer comme lu</span>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <!-- Les notifications seront chargées ici -->
+        </div>
+    </div>
+    
+    <main>
+        <div class="container">
+            <div class="sidebar">
+                <h3>Mes groupes</h3>
+                <ul class="group-list" id="groupList">
+                    <!-- Les groupes seront chargés ici -->
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <button onclick="showModal('createGroupModal')">Créer un groupe</button>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div id="groupContent">
+                    <!-- Le contenu du groupe sélectionné sera chargé ici -->
+                    <div class="welcome-message" id="welcomeMessage">
+                        <h2>Bienvenue sur Parent Connect</h2>
+                        <p>Sélectionnez un groupe dans la barre latérale ou créez-en un nouveau pour commencer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script>
+        // Configuration API
+        const API_URL = 'http://localhost:3000/api'; // Remplacez par l'URL de votre API
+        let currentUser = null;
+        let authToken = localStorage.getItem('token');
+        let currentGroup = null;
+        
+        // Vérifier si l'utilisateur est connecté au chargement de la page
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Si on est en mode de démonstration sans backend, charger des données fictives
+            if (!authToken) {
+                // En mode démo, on simule une connexion
+                showModal('authModal');
+            } else {
+                try {
+                    // Sinon, on vérifie si le token est valide
+                    await fetchUserProfile();
+                    loadGroups();
+                    fetchUnreadNotifications();
+                } catch (error) {
+                    console.error('Erreur d\'authentification:', error);
+                    localStorage.removeItem('token');
+                    showModal('authModal');
+                }
+            }
+        });
+        
+        // Fonctions d'authentification
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            try {
+                showLoading();
+                
+                // Si on peut se connecter à l'API
+                if (API_URL) {
+                    const response = await fetch(`${API_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Identifiants incorrects');
+                    }
+                    
+                    const data = await response.json();
+                    authToken = data.token;
+                    localStorage.setItem('token', authToken);
+                    
+                    await fetchUserProfile();
+                } else {
+                    // Simulation pour la démonstration
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    currentUser = {
+                        firstName: 'Marie',
+                        lastName: 'Dupont',
+                        email: email
+                    };
+                    authToken = 'demo-token';
+                    localStorage.setItem('token', authToken);
+                }
+                
+                closeModal('authModal');
+                updateUserInterface();
+                loadGroups();
+                fetchUnreadNotifications();
+            } catch (error) {
+                alert(error.message || 'Erreur de connexion');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function register() {
+            const firstName = document.getElementById('registerFirstName').value;
+            const lastName = document.getElementById('registerLastName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+            
+            if (!firstName || !lastName || !email || !password || !passwordConfirm) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                alert('Les mots de passe ne correspondent pas');
+                return;
+            }
+            
+            try {
+                showLoading();
+                
+                if (API_URL) {
+                    const response = await fetch(`${API_URL}/auth/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ firstName, lastName, email, password })
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Erreur d\'inscription');
+                    }
+                    
+                    const data = await response.json();
+                    authToken = data.token;
+                    localStorage.setItem('token', authToken);
+                    
+                    await fetchUserProfile();
+                } else {
+                    // Simulation pour la démonstration
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    currentUser = {
+                        firstName,
+                        lastName,
+                        email
+                    };
+                    authToken = 'demo-token';
+                    localStorage.setItem('token', authToken);
+                }
+                
+                closeModal('authModal');
+                updateUserInterface();
+                loadGroups();
+            } catch (error) {
+                alert(error.message || 'Erreur d\'inscription');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function fetchUserProfile() {
+            if (!authToken) return;
+            
+            try {
+                if (API_URL) {
+                    const response = await fetch(`${API_URL}/users/profile`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Session expirée');
+                    }
+                    
+                    const data = await response.json();
+                    currentUser = data;
+                } else {
+                    // Simulation pour la démonstration
+                    currentUser = {
+                        firstName: 'Marie',
+                        lastName: 'Dupont',
+                        email: 'marie.dupont@exemple.com'
+                    };
+                }
+                
+                updateUserInterface();
+            } catch (error) {
+                localStorage.removeItem('token');
+                authToken = null;
+                currentUser = null;
+                throw error;
+            }
+        }
+        
+        function updateUserInterface() {
+            const authButton = document.getElementById('authButton');
+            const userName = document.getElementById('userName');
+            
+            if (currentUser) {
+                userName.textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+                authButton.textContent = 'Déconnexion';
+                authButton.onclick = logout;
+            } else {
+                userName.textContent = 'Non connecté';
+                authButton.textContent = 'Se connecter';
+                authButton.onclick = () => showModal('authModal');
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            authToken = null;
+            currentUser = null;
+            updateUserInterface();
+            document.getElementById('groupList').innerHTML = '';
+            document.getElementById('groupContent').innerHTML = `
+                <div class="welcome-message">
+                    <h2>Bienvenue sur Parent Connect</h2>
+                    <p>Veuillez vous connecter pour accéder à vos groupes.</p>
+                </div>
+            `;
+            showModal('authModal');
+        }
+        
+        // Gestion des groupes
+        async function loadGroups() {
+            if (!authToken) return;
+            
+            try {
+                showLoading();
+                let groups = [];
+                
+                if (API_URL) {
+                    const response = await fetch(`${API_URL}/groups/my-groups`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Erreur lors du chargement des groupes');
+                    }
+                    
+                    groups = await response.json();
+                } else {
+                    // Simulation pour la démonstration
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    groups = [
+                        { _id: '1', name: 'Parents de Lyon', tags: ['Lyon', '6-12 ans', 'École'] },
+                        { _id: '2', name: 'Activités en plein air', tags: ['Activités', 'Nature', 'Sport'] },
+                        { _id: '3', name: 'Alimentation et enfants', tags: ['Nutrition', 'Santé', 'Recettes'] },
+                        { _id: '4', name: 'Accompagnement scolaire', tags: ['École', 'Devoirs', 'Apprentissage'] }
+                    ];
+                }
+                
+                const groupList = document.getElementById('groupList');
+                groupList.innerHTML = '';
+                
+                groups.forEach(group => {
+                    const li = document.createElement('li');
+                    li.className = 'group-item';
+                    li.textContent = group.name;
+                    li.dataset.id = group._id;
+                    li.addEventListener('click', () => loadGroupContent(group._id));
+                    groupList.appendChild(li);
+                });
+                
+                // Si des groupes existent, charger le premier par défaut
+                if (groups.length > 0) {
+                    loadGroupContent(groups[0]._id);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function loadGroupContent(groupId) {
+            if (!authToken) return;
+            
+            try {
+                showLoading();
+                
+                // Mise à jour de l'interface (sélection visuelle du groupe)
+                const groupItems = document.querySelectorAll('.group-item');
+                groupItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.id === groupId) {
+                        item.classList.add('active');
+                    }
+                });
+                
+                let group, posts;
+                
+                if (API_URL) {
+                    // Charger les infos du groupe
+                    const groupResponse = await fetch(`${API_URL}/groups/${groupId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (!groupResponse.ok) {
+                        throw new Error('Erreur lors du chargement du groupe');
+                    }
+                    
+                    group = await groupResponse.json();
+                    
+                    // Charger les publications du groupe
+                    const postsResponse = await fetch(`${API_URL}/groups/${groupId}/posts`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (!postsResponse.ok) {
+                        throw new Error('Erreur lors du chargement des publications');
+                    }
+                    
+                    posts = await postsResponse.json();
+                } else {
+                    // Simulation pour la démonstration
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    
+                    // Simuler les données du groupe
+                    if (groupId === '1') {
+                        group = { 
+                            _id: '1', 
+                            name: 'Parents de Lyon', 
+                            description: 'Groupe pour les parents de la région lyonnaise', 
+                            tags: ['Lyon', '6-12 ans', 'École'] 
+                        };
+                        
+                        posts = [
+                            {
+                                _id: 'p1',
+                                author: { _id: 'u2', firstName: 'Sophie', lastName: 'Martin' },
+                                content: 'Bonjour à tous ! Nous cherchons des idées d\'activités pour les vacances de Pâques à Lyon avec des enfants de 8-10 ans. Avez-vous des suggestions ? Merci d\'avance pour vos conseils !',
+                                createdAt: new Date().toISOString(),
+                                comments: [
+                                    {
+                                        _id: 'c1',
+                                        author: { _id: 'u3', firstName: 'Thomas', lastName: 'Blanc' },
+                                        text: 'Le Musée des Confluences propose des ateliers pour enfants pendant les vacances. Mes filles ont adoré l\'année dernière !',
+                                        createdAt: new Date().toISOString()
+                                    },
+                                    {
+                                        _id: 'c2',
+                                        author: { _id: 'u4', firstName: 'Claire', lastName: 'Dubois' },
+                                        text: 'Je recommande aussi le parc de la Tête d\'Or, ils ont des activités spéciales pour Pâques, avec une chasse aux œufs si je ne me trompe pas.',
+                                        createdAt: new Date().toISOString()
+                                    }
+                                ]
+                            },
+                            {
+                                _id: 'p2',
+                                author: { _id: 'u5', firstName: 'Lucas', lastName: 'Renaud' },
+                                content: 'Je cherche des recomman
