@@ -1,0 +1,121 @@
+<div class="footer-col">
+                            <h3>Support</h3>
+                            <ul>
+                                <li><a href="#">Help Center</a></li>
+                                <li><a href="#">FAQs</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Report an Issue</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-col">
+                            <h3>Legal</h3>
+                            <ul>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Cookie Policy</a></li>
+                                <li><a href="#">GDPR Compliance</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="copyright">
+                        &copy; 2025 ParentConnect. All rights reserved.
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+        <!-- French Version -->
+        <div id="fr" class="hidden">
+            <!-- French content would go here -->
+        </div>
+        
+        <!-- Spanish Version -->
+        <div id="es" class="hidden">
+            <!-- Spanish content would go here -->
+        </div>
+        
+        <!-- Italian Version -->
+        <div id="it" class="hidden">
+            <!-- Italian content would go here -->
+        </div>
+    </div>
+    
+    <script>
+        // Language selector functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageSelector = document.querySelector('.language-selector');
+            const languageOptions = document.querySelector('.language-options');
+            const languageOptionItems = document.querySelectorAll('.language-option');
+            const currentLanguageElement = document.querySelector('.current-language span:first-child');
+            
+            // Toggle language options dropdown
+            languageSelector.addEventListener('click', function(e) {
+                e.stopPropagation();
+                languageOptions.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                languageOptions.classList.remove('active');
+            });
+            
+            // Handle language selection
+            languageOptionItems.forEach(option => {
+                option.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    const flag = this.querySelector('span').textContent;
+                    const langText = this.textContent.trim().split(' ')[1];
+                    
+                    // Update current language display
+                    currentLanguageElement.textContent = `${flag} ${langText}`;
+                    
+                    // Hide all language versions
+                    document.querySelectorAll('#app > div').forEach(div => {
+                        div.classList.add('hidden');
+                    });
+                    
+                    // Show selected language version
+                    document.getElementById(lang).classList.remove('hidden');
+                    
+                    // Close dropdown
+                    languageOptions.classList.remove('active');
+                });
+            });
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const closeMobileNavBtn = document.querySelector('.close-mobile-nav');
+            const mobileNav = document.querySelector('.mobile-nav');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileNav.classList.add('active');
+            });
+            
+            closeMobileNavBtn.addEventListener('click', function() {
+                mobileNav.classList.remove('active');
+            });
+            
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('active');
+                    
+                    // Handle language selection in mobile menu
+                    const lang = this.getAttribute('data-lang');
+                    if (lang) {
+                        // Hide all language versions
+                        document.querySelectorAll('#app > div').forEach(div => {
+                            div.classList.add('hidden');
+                        });
+                        
+                        // Show selected language version
+                        document.getElementById(lang).classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

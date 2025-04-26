@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParentConnect - Connecting Parents Worldwide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1976D2;
+            --primary-dark: #0D47A1;
+            --primary-light: #42A5F5;
+            --white: #ffffff;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --red-500: #ef4444;
+            --green-500: #10b981;
+            --green-600: #059669;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .language-selector {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .current-language {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .language-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            min-width: 120px;
+            display: none;
+            z-index: 10;
+        }
+        
+        .language-options.active {
+            display: block;
+        }
+        
+        .language-option {
+            padding: 8px 15px;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .language-option:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .language-flag {
+            width: 20px;
+            height: 15px;
+            object-fit: cover;
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+        
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background-color: var(--white);
+            border-radius: 30px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .app-screen {
+            width: 100%;
+            height: 100%;
+            background-color: var(--gray-100);
+            padding: 20px;
+        }
+        
+        .app-header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .app-content {
+            padding: 15px;
+        }
+        
+        .welcome-card {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-card h3 {
+            margin-bottom: 5px;
+        }
+        
+        .welcome-card p {
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .welcome-card button {
+            background-color: var(--white);
+            color: var(--primary);
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 8px 15px;
+            margin-right: 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .tab.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .tab.inactive {
+            background-color: var(--gray-200);
+            color: var(--gray-700);
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .chat-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--white);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--gray-300);
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .chat-content {
+            flex: 1;
+        }
+        
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .chat-badge {
+            background-color: var(--red-500);
+            color: var(--white);
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 0.7rem;
+        }
+        
+        .chat-message {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+        
+        .app-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: var(--white);
+            border-top: 1px solid var(--gray-200);
+            border-radius: 0 0 15px 15px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--gray-500);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-item-icon {
+            margin-bottom: 3px;
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-header p {
+            color: var(--gray-500);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .feature-card p {
+            color: var(--gray-500);
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--gray-100);
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .quote {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background-color: var(--gray-300);
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .user-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+        
+        /* Download Section */
+        .download {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .app-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .app-btn {
+            display: flex;
+            align-items: center;
+            background-color: var(--white);
+            color: var(--gray-800);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+        
+        .app-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .app-btn span {
+            margin-left: 10px;
+            text-align: left;
+        }
+        
+        .app-btn .store {
+            font-size: 0.7rem;
+            display: block;
+        }
+        
+        .app-btn .app-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--gray-800);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 30px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col ul li a {
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--primary-light);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-300);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 50px 0;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .phone-mockup {
+                width: 250px;
+                height: 500px;
+            }
+            
+            .app-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .mobile-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: var(--primary);
+                z-index: 200;
+                padding: 20px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-nav.active {
+                transform: translateX(0);
+            }
+            
+            .mobile-nav-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+            
+            .mobile-nav-links {
+                list-style: none;
+            }
+            
+            .mobile-nav-links li {
+                margin-bottom: 20px;
+            }
+            
+            .mobile-nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-size: 1.2rem;
+                display: block;
+                padding: 10px 0;
+            }
+        }
+    
+        .nav-link.sign-in {
+            color: blue !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- English Version -->
+        <div id="en" class="">
+            <!-- Header -->
+            <header>
+                <div class="container">
+                    <nav>
+                        <div class="logo">ParentConnect</div>
+                        <button class="mobile-menu-btn">☰</button>
+                        <ul class="nav-links desktop-nav">
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#testimonials">Testimonials</a></li>
+                            <li><a href="#download">Download</a></li>
+                            <li><a href="#" class="btn">Sign In</a></li>
+                            <li class="language-selector">
+                                <div class="current-language">
+                                    <span>🇺🇸 EN</span>
+                                    <span>▼</span>
+                                </div>
+                                <div class="language-options">
+                                    <div class="language-option" data-lang="en">
+                                        <span>🇺🇸</span> English
+                                    </div>
+                                    <div class="language-option" data-lang="fr">
+                                        <span>🇫🇷</span> Français
+                                    </div>
+                                    <div class="language-option" data-lang="es">
+                                        <span>🇪🇸</span> Español
+                                    </div>
+                                    <div class="language-option" data-lang="it">
+                                        <span>🇮🇹</span> Italiano
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            
+            <!-- Mobile Navigation -->
+            <div class="mobile-nav">
+                <div class="mobile-nav-header">
+                    <div class="logo">ParentConnect</div>
+                    <button class="close-mobile-nav">✕</button>
+                </div>
+                <ul class="mobile-nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="#">Sign In</a></li>
+                    <li><a href="#" data-lang="en">🇺🇸 English</a></li>
+                    <li><a href="#" data-lang="fr">🇫🇷 Français</a></li>
+                    <li><a href="#" data-lang="es">🇪🇸 Español</a></li>
+                    <li><a href="#" data-lang="it">🇮🇹 Italiano</a></li>
+                </ul>
+            </div>
+            
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Connect with other parents just like you</h1>
+                        <p>ParentConnect is an app that enables you to communicate with other parents, find expert advice, and join discussion groups on topics that interest you.</p>
+                        <a href="#download" class="btn">Download the App</a>
+                    </div>
+                    <div class="hero-image">
+                        <div class="phone-mockup">
+                            <div class="app-screen">
+                                <div class="app-header">
+                                    <div style="font-weight: 700; font-size: 1.1rem;">ParentConnect</div>
+                                    <div style="width: 24px; height: 24px; background-color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                        <div style="color: #1976D2; font-weight: bold; font-size: 0.8rem;">J</div>
+                                    </div>
+                                </div>
+                                <div class="app-content">
+                                    <div class="welcome-card">
+                                        <h3>Hello, John!</h3>
+                                        <p>3 parents near you share your interests</p>
+                                        <button>View suggestions</button>
+                                    </div>
+                                    
+                                    <div class="tabs">
+                                        <div class="tab active">For you</div>
+                                        <div class="tab inactive">Nearby</div>
+                                    </div>
+                                    
+                                    <h3 class="section-title">Recent discussions</h3>
+                                    <div class="chat-item">
+                                        <div class="chat-avatar"></div>
+                                        <div class="chat-content">
+                                            <div class="chat-header">
+                                                <div class="chat-name">Sleep group 0-2 years</div>
+                                                <div class="chat-badge">3</div>
+                                            </div>
+                                            <div class="chat-message">Emma: My 18-month-old still wakes up at night...</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="chat-item">
+                                        <div class="chat-avatar"></div>
+                                        <div class="chat-content">
+                                            <div class="chat-header">
+                                                <div class="chat-name">Weekend activities</div>
+                                            </div>
+                                            <div class="chat-message">Mark: Who's up for the park on Sunday?</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="app-nav">
+                                    <div class="nav-item active">
+                                        <div class="nav-item-icon">💬</div>
+                                        <div>Messages</div>
+                                    </div>
+                                    <div class="nav-item">
+                                        <div class="nav-item-icon">📅</div>
+                                        <div>Events</div>
+                                    </div>
+                                    <div class="nav-item">
+                                        <div class="nav-item-icon">📚</div>
+                                        <div>Resources</div>
+                                    </div>
+                                    <div class="nav-item">
+                                        <div class="nav-item-icon">👤</div>
+                                        <div>Profile</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Features Section -->
+            <section class="features" id="features">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Everything you need</h2>
+                        <p>ParentConnect offers a comprehensive set of features to make parents' daily lives easier.</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">💬</div>
+                            <h3>Group Discussions</h3>
+                            <p>Join thematic discussion groups to exchange with other parents on specific topics such as sleep, nutrition, or education.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📱</div>
+                            <h3>Personalized Matching</h3>
+                            <p>Our algorithm suggests parents who share your interests and live near you.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📚</div>
+                            <h3>Expert Resources</h3>
+                            <p>Access articles and advice written by childhood professionals to help you in your role as a parent.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📅</div>
+                            <h3>Local Events</h3>
+                            <p>Discover and organize activities and meetings with other families in your neighborhood.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                            <h3>Supportive Community</h3>
+                            <p>Exchange in a secure and respectful environment where every parent can share without judgment.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔒</div>
+                            <h3>Guaranteed Privacy</h3>
+                            <p>Your personal data and that of your children are protected with the highest security standards.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Testimonials -->
+            <section class="testimonials" id="testimonials">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>What Parents Are Saying</h2>
+                        <p>Hear from parents who have already joined our community</p>
+                    </div>
+                    
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <div class="quote">
+                                "ParentConnect has completely changed how I connect with other parents. I've made real friendships and found invaluable support for my parenting journey."
+                            </div>
+                            <div class="user">
+                                <div class="user-avatar"></div>
+                                <div class="user-info">
+                                    <h4>Sarah J.</h4>
+                                    <p>Mother of two, New York</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-card">
+                            <div class="quote">
+                                "As a single dad, I was looking for resources and community. This app has given me both and connected me with other parents facing similar challenges."
+                            </div>
+                            <div class="user">
+                                <div class="user-avatar"></div>
+                                <div class="user-info">
+                                    <h4>Michael T.</h4>
+                                    <p>Father of one, Chicago</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-card">
+                            <div class="quote">
+                                "The expert resources and group discussions have been a lifesaver during those challenging first months with our newborn. I can't imagine parenting without this app now!"
+                            </div>
+                            <div class="user">
+                                <div class="user-avatar"></div>
+                                <div class="user-info">
+                                    <h4>Lisa & Tom K.</h4>
+                                    <p>New parents, Boston</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Download Section -->
+            <section class="download" id="download">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Download ParentConnect Today</h2>
+                        <p>Join thousands of parents already using our app</p>
+                    </div>
+                    
+                    <div class="app-buttons">
+                        <a href="#" class="app-btn">
+                            <div>📱</div>
+                            <span>
+                                <span class="store">Download on the</span>
+                                <span class="app-name">App Store</span>
+                            </span>
+                        </a>
+                        <a href="#" class="app-btn">
+                            <div>🤖</div>
+                            <span>
+                                <span class="store">GET IT ON</span>
+                                <span class="app-name">Google Play</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer>
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-col">
+                            <h3>ParentConnect</h3>
+                            <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Our Team</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Blog</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-col">
+                            <h3>Features</h3>
+                            <ul>
+                                <li><a href="#">Community</a></li>
+                                <li><a href="#">Expert Resources</a></li>
+                                <li><a href="#">Events</a></li>
+                                <li><a href="#">Marketplace</a></li>
+                            </ul>
+                        </div>
